@@ -13,13 +13,13 @@ object Board { // x in (A ... J), y in (1, 10)
   val boardType = BoardT.SMALL // todo: changeable size
 
   def startX = 'A'
-  def endX = (64 + boardType.size) toChar
+  def endX = (64 + boardType.size).toChar
   def startY = 0
-  def endY = boardType.size
+  def endY = boardType.size - 1
 
 
-  def xInBoard(x: Char): Boolean = (x > startX && x < endX)
-  def yInBoard(y: Int): Boolean = (y > startY && y < endY)
+  def xInBoard(x: Char): Boolean = (x >= startX && x <= endX)
+  def yInBoard(y: Int): Boolean = (y >= startY && y <= endY)
 
   def next_x(x: Char): Option[Char] = {
     if (xInBoard(x) && xInBoard((x + 1).toChar)) Some((x + 1).toChar)

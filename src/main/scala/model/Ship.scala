@@ -12,6 +12,7 @@ object Direction extends Enumeration {
 }
 
 case class ShipType(name: String, size: Int)
+
 object ShipT {
   val CARRIER = ShipType("CARRIER", 5)
   val BATTLESHIP = ShipType("BATTLESHIP", 4)
