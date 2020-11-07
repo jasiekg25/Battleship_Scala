@@ -1,9 +1,10 @@
 package model
 
-class Player extends TPlayer {
-  override def fleet: Fleet = ???
+case class Player (
+                    fleet: Fleet,
+                    myBoard: PlayerBoard,
+                    enemyBoar: PlayerBoard
+                  ) {
 
-  override def playerBoard: Map[(Char, Int), PointType.Value] = ???
 
-  override def enemyBoard: Map[(Char, Int), PointType.Value] = ???
 }

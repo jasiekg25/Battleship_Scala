@@ -1,6 +1,6 @@
 package model
 
-case class Ship(direction: Direction.Value, startPoint: Point, typeShip: ShipType) {
+case class Ship( direction: Direction.Value, startPoint: Point, typeShip: ShipType) {
   // the startPoint is always closer to  the point (0,0) than an endPoint
   // the board is a positive quarter
 
@@ -8,14 +8,14 @@ case class Ship(direction: Direction.Value, startPoint: Point, typeShip: ShipTyp
     direction match {
       case Direction.HORIZONTAL =>
         Point(
-          (startPoint.x + typeShip.size - 1).toChar,
-          startPoint.y,
+          (startPoint.coordinates._1 + typeShip.size - 1).toChar,
+          startPoint.coordinates._2,
           startPoint.pointType
         )
       case Direction.VERTICAL =>
         Point(
-          startPoint.x,
-          startPoint.y + typeShip.size - 1,
+          startPoint.coordinates._1,
+          startPoint.coordinates._2 + typeShip.size - 1,
           startPoint.pointType
         )
     }
@@ -32,14 +32,14 @@ case class Ship(direction: Direction.Value, startPoint: Point, typeShip: ShipTyp
       direction match {
         case Direction.HORIZONTAL =>
           Point(
-            (point.x + 1).toChar,
-            point.y,
+            (point.coordinates._1 + 1).toChar,
+            point.coordinates._2,
             point.pointType
           )
         case Direction.VERTICAL =>
           Point(
-            point.x,
-            point.y + 1,
+            point.coordinates._1,
+            point.coordinates._2 + 1,
             point.pointType
           )
 
@@ -67,5 +67,6 @@ object ShipT {
   val DESTROYER = ShipType("DESTROYER", 3)
   val SUBMARINE = ShipType("SUBMARINE", 3)
   val PATROL_BOAT = ShipType("PATROL_BOAT", 2)
+
 
 }

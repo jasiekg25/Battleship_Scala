@@ -2,8 +2,10 @@ package model
 
 import org.scalatest.{BeforeAndAfterEach, FunSuite}
 
+import scala.collection.mutable
+
 class FleetTest extends FunSuite with BeforeAndAfterEach {
-  val fleet: Fleet = Fleet(Set.empty)
+  val fleet: Fleet = Fleet(mutable.Set.empty)
 
   val carrier: Ship = Ship(Direction.HORIZONTAL, Point('A', 1, PointType.OCCUPIED), ShipT.CARRIER)
   val battleship: Ship = Ship(Direction.HORIZONTAL, Point('F', 2, PointType.OCCUPIED), ShipT.BATTLESHIP)

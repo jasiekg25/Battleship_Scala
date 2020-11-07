@@ -1,7 +1,9 @@
 package model
 
-case class Fleet( var shipsSet: Set[Ship] ) {
-  def addShip(ship: Ship): Set[Ship] = {
+import scala.collection.mutable
+
+case class Fleet(var shipsSet: mutable.Set[Ship] ) {
+  def addShip(ship: Ship): mutable.Set[Ship] = {
     if( !isShipOverlappingWithAlreadyContainedShip(ship)){
       shipsSet += ship
       shipsSet
@@ -11,12 +13,12 @@ case class Fleet( var shipsSet: Set[Ship] ) {
 
   }
 
-  def removeShip(ship: Ship): Set[Ship] = {
+  def removeShip(ship: Ship): mutable.Set[Ship] = {
     shipsSet -= ship
     shipsSet
   }
   def removeAll: Unit = {
-    shipsSet = Set.empty
+    shipsSet = mutable.Set.empty
   }
 
   def isShipOverlappingWithAlreadyContainedShip(ship: Ship): Boolean ={
@@ -25,7 +27,8 @@ case class Fleet( var shipsSet: Set[Ship] ) {
       containedShip: Ship <- shipsSet;
       containedPoint: Point <- containedShip.getAllPoints;
       checkedPoint: Point <- ship.getAllPoints;
-      if (containedPoint.x == checkedPoint.x && containedPoint.y == checkedPoint.y)
+      if (containedPoint.coordinates._1 == checkedPoint.coordinates._1 &&
+        containedPoint.coordinates._2 == checkedPoint.coordinates._2)
       ) isOverlaping = true
     isOverlaping
 

@@ -21,9 +21,9 @@ object MainBoard { // x in (A ... J), y in (0, 9)
 
   def xInBoard(x: Char): Boolean = (x >= startX && x <= endX)
   def yInBoard(y: Int): Boolean = (y >= startY && y <= endY)
-  def pointInBoard(point: Point): Boolean = xInBoard(point.x) && yInBoard(point.y)
+  def pointInBoard(coordinates: (Char, Int)): Boolean = xInBoard(coordinates._1) && yInBoard(coordinates._2)
   def isShipSuitToBoard(ship: Ship): Boolean =
-    pointInBoard(ship.startPoint) && pointInBoard(ship.endPoint)
+    pointInBoard(ship.startPoint.coordinates) && pointInBoard(ship.endPoint.coordinates)
 
 
   def next_x(x: Char): Option[Char] = {
