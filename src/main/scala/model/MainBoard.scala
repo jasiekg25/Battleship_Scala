@@ -1,25 +1,30 @@
 package model
 
-case class BoardType(name: String, size: Int)
-
-object BoardT {
-  val LARGE = BoardType("LARGE", 30)
-  val MEDIUM = BoardType("MEDIUM", 20)
-  val SMALL = BoardType("SMALL", 10)
+case class Board(name: String, size: Int)
+object BoardType {
+  val LARGE: Board = Board("LARGE", 30)
+  val MEDIUM: Board = Board("MEDIUM", 20)
+  val SMALL: Board = Board("SMALL", 10)
 }
 
-object Board { // x in (A ... J), y in (1, 10)
+
+object MainBoard { // x in (A ... J), y in (0, 9)
   val shipsTypes: List[ShipType] = List(ShipT.CARRIER, ShipT.BATTLESHIP, ShipT.DESTROYER, ShipT.SUBMARINE, ShipT.PATROL_BOAT)
-  val boardType = BoardT.SMALL // todo: changeable size
+  val boardType: Board = BoardType.SMALL // todo: changeable size
+
 
   def startX = 'A'
-  def endX = (64 + boardType.size).toChar
+  def endX: Char = (64 + boardType.size).toChar
   def startY = 0
-  def endY = boardType.size - 1
+  def endY: Int = boardType.size - 1
 
 
   def xInBoard(x: Char): Boolean = (x >= startX && x <= endX)
   def yInBoard(y: Int): Boolean = (y >= startY && y <= endY)
+  def pointInBoard(point: Point): Boolean = xInBoard(point.x) && yInBoard(point.y)
+  def isShipSuitToBoard(ship: Ship): Boolean =
+    pointInBoard(ship.startPoint) && pointInBoard(ship.endPoint)
+
 
   def next_x(x: Char): Option[Char] = {
     if (xInBoard(x) && xInBoard((x + 1).toChar)) Some((x + 1).toChar)
@@ -35,8 +40,10 @@ object Board { // x in (A ... J), y in (1, 10)
     if(yInBoard(y) && yInBoard(y + 1)) Some(y+1)
     else None
   }
+
   def previous_y(y:Int): Option[Int] = {
     if(yInBoard(y) && yInBoard(y - 1)) Some(y-1)
     else None
   }
+
 }

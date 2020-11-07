@@ -1,8 +1,9 @@
 package model
 
-case class Point(x: Int, y: Int, pointType: PointType.Value) {
+case class Point(x: Char, y: Int, var pointType: PointType.Value) {
 
 //  def changePointType(type: String) = Point()
+
 }
 
 object PointType extends Enumeration {
