@@ -1,9 +1,10 @@
 package model
 
 case class Player (
-                    fleet: Fleet,
-                    myBoard: PlayerBoard,
-                    enemyBoar: PlayerBoard
+                    id: String,
+                    fleet: Fleet = Fleet(),
+                    myBoard: PlayerBoard = PlayerBoard(),
+                    enemyBoard: PlayerBoard = PlayerBoard()
                   ) {
 
 

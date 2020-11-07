@@ -2,7 +2,8 @@ package model
 
 import scala.collection.mutable
 
-case class Fleet(var shipsSet: mutable.Set[Ship] ) {
+case class Fleet(var shipsSet: mutable.Set[Ship] = mutable.Set.empty ) {
+
   def addShip(ship: Ship): mutable.Set[Ship] = {
     if( !isShipOverlappingWithAlreadyContainedShip(ship)){
       shipsSet += ship

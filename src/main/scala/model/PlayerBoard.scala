@@ -39,7 +39,7 @@ case class PlayerBoard(
     map
   }
 
-  def shoot(coordinates: (Char, Int)) = {
+  def shoot(coordinates: (Char, Int)) = { // TODO: show notification
     if (MainBoard.pointInBoard(coordinates))
       map(coordinates) match {
         case PointType.WATER => {
@@ -55,9 +55,10 @@ case class PlayerBoard(
           map
       }
     map
+
   }
 
-  def isShipAllHit(ship: Ship): Boolean = {
+  def isShipAllHit(ship: Ship): Boolean = { // TODO: show notification
     var hitPoints: Int = 0
     ship.forAllPoints(p => {
       if (map(p.coordinates) == PointType.HIT)
@@ -66,13 +67,27 @@ case class PlayerBoard(
 
     hitPoints == ship.typeShip.size
   }
+
+  def isShipSunken(ship: Ship): Boolean = {
+    map(ship.startPoint.coordinates) == PointType.SINK
+  }
+
+  def isAllFleetSunken(fleet: Fleet): Boolean = {
+    var fleetSize = fleet.shipsSet.size
+    for(
+      ship <- fleet.shipsSet
+      if (isShipSunken(ship))
+    ) fleetSize -= 1
+
+    fleetSize == 0
+  }
   
   def sinkShip(ship: Ship) = {
     ship.forAllPoints(p => map(p.coordinates) = PointType.SINK)
     map
   }
 
-  def checkFleet(fleet: Fleet) = {
+  def checkFleet(fleet: Fleet) = { // TODO: show notification
     for {
       ship <- fleet.shipsSet
       if(isShipAllHit(ship))
