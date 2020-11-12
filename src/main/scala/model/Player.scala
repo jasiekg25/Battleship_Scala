@@ -10,5 +10,5 @@ trait Player {
   def takeShot(coordinates: Coordinates): Player
   def checkFleet(coordinates: Coordinates): Player
   def isAllFleetSunken(): Boolean
-  def initailicePlayerBoardWithFleet(fleet: Fleet): Player
+  def initWithWater(): Player
 }

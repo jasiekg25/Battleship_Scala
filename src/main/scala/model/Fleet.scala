@@ -29,16 +29,8 @@ case class Fleet(shipsSet: Set[Ship] = Set.empty ) {
   }
 
   def isShipOverlappingWithAlreadyContainedShip(ship: Ship): Boolean ={
-    var isOverlaping: Boolean = false
-    for (
-      containedShip: Ship <- shipsSet;
-      containedPoint: Point <- containedShip.getAllPoints;
-      checkedPoint: Point <- ship.getAllPoints;
-      if (containedPoint._1._1 == checkedPoint._1._1 &&
-        containedPoint._1._2 == checkedPoint._1._2)
-    ) isOverlaping = true
-    isOverlaping
 
+    shipsSet.exists(s => s.getAllPoints.exists(p => ship.getAllPoints.contains(p)))
   }
 
 }

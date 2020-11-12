@@ -39,7 +39,7 @@ case class RegularPlayer(
     updateListOfPoints(pointsToUpdate)
   }
 
-  def initailicePlayerBoardWithFleet(fleet: Fleet): Player = {
+  def initWithWater(): Player = {
 
     val waterPointsSet =
       for {
@@ -47,7 +47,7 @@ case class RegularPlayer(
         y <- MainBoard.startY to MainBoard.endY
         if (!myBoard.contains((x, y)))
       } yield (((x, y), PointType.WATER))
-    updateListOfPoints(waterPointsSet.toSet)//.addFleet(fleet)
+    updateListOfPoints(waterPointsSet.toSet)
   }
 
   def takeShot(coordinates: (Char, Int)): Player = { // TODO: show notification

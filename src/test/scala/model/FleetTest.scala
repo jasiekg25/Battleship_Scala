@@ -8,8 +8,8 @@ class FleetTest extends FunSuite with BeforeAndAfterEach {
   var fleet: Fleet = Fleet(Set.empty)
 
   val carrier: Ship = Ship(Direction.HORIZONTAL, (('A', 1), PointType.OCCUPIED), ShipT.CARRIER)
-  val battleship: Ship = Ship(Direction.HORIZONTAL, (('F', 2), PointType.OCCUPIED), ShipT.BATTLESHIP)
-  val destroyer: Ship = Ship(Direction.VERTICAL, (('B', 0), PointType.OCCUPIED), ShipT.DESTROYER)
+  val battleship: Ship = Ship(Direction.HORIZONTAL, (('A', 5), PointType.OCCUPIED), ShipT.BATTLESHIP)
+  val destroyer: Ship = Ship(Direction.VERTICAL, (('A', 0), PointType.OCCUPIED), ShipT.DESTROYER)
   val submarine: Ship = Ship(Direction.HORIZONTAL, (('C', 0), PointType.OCCUPIED), ShipT.SUBMARINE)
   val patrol_boat: Ship = Ship(Direction.HORIZONTAL, (('D', 0), PointType.OCCUPIED), ShipT.PATROL_BOAT)
 

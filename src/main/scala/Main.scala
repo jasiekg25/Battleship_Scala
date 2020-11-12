@@ -7,21 +7,21 @@ object Main {
   def createPlayer(playerNumber: Int): Player = {
     println(s"Give name for player$playerNumber:")
     val input: String = scala.io.StdIn.readLine()
-    RegularPlayer(input)
+    RegularPlayer(input).initWithWater()
   }
 
   def placePlayerFleet(player: Player, game: Game): Game = {
-    def askForInput(shipT: ShipType): Array[String] = {
+    def askForDirectionAndCoordinates(shipT: ShipType): Array[String] = {
       println(
         s"Input ${shipT.name}\'s direction and start coordinates\n" +
           "Required format example: \t H,A,0 or V,A,0 or Horizontal,A,0 or Vertical,A,0\n" +
           s"Remember that you need ${shipT.size} free points for that ship")
       val input: Array[String] = scala.io.StdIn.readLine().split(",")
       if (checkInput("placeShip", input))
-        input
+        input.map(i => i.toUpperCase)
       else {
         println("Wrong input, try again correct one!\n")
-        askForInput(shipT)
+        askForDirectionAndCoordinates(shipT)
       }
     }
 
@@ -29,8 +29,8 @@ object Main {
     println(s"\nTime to set ${player.id}\'s  fleet")
     var updatedGame = game
     for(shipType <- MainBoard.shipsTypes){
-      val input: Array[String] = askForInput(shipType)
-      updatedGame = game.setShip(player, shipType.name, input(0), input(1).charAt(0), input(2).toInt)
+      val input: Array[String] = askForDirectionAndCoordinates(shipType)
+      updatedGame = updatedGame.setShip(updatedGame.getPlayer(player), shipType.name, input(0), input(1).charAt(0), input(2).toInt)
     }
 //    val updatedPlayer = updatedGame.getPlayer(player).initailicePlayerBoardWithFleet(player.fleet)
     updatedGame
@@ -43,7 +43,7 @@ object Main {
           "Required format example: \tA,0\n")
       val input: Array[String] = scala.io.StdIn.readLine().split(",")
       if (checkInput("shotCoordinates", input))
-        input
+        input.map(i => i.toUpperCase)
       else {
         println("Wrong coordinates, try again with correct one!")
         askForCoordinates(player)
