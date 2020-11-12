@@ -1,5 +1,7 @@
 package model
 
+import model.DataTypes.Point
+
 case class Ship( direction: Direction.Value, startPoint: Point, typeShip: ShipType) {
   // the startPoint is always closer to  the point (0,0) than an endPoint
   // the board is a positive quarter
@@ -7,16 +9,14 @@ case class Ship( direction: Direction.Value, startPoint: Point, typeShip: ShipTy
   def endPoint: Point = {
     direction match {
       case Direction.HORIZONTAL =>
-        Point(
-          (startPoint.coordinates._1 + typeShip.size - 1).toChar,
-          startPoint.coordinates._2,
-          startPoint.pointType
+        (
+          ((startPoint._1._1 + typeShip.size - 1).toChar, startPoint._1._2), // coordinates
+          startPoint._2 // pointType
         )
       case Direction.VERTICAL =>
-        Point(
-          startPoint.coordinates._1,
-          startPoint.coordinates._2 + typeShip.size - 1,
-          startPoint.pointType
+        (
+          (startPoint._1._1, startPoint._1._2 + typeShip.size - 1), // coordinates
+          startPoint._2 // pointType
         )
     }
   }
@@ -27,22 +27,19 @@ case class Ship( direction: Direction.Value, startPoint: Point, typeShip: ShipTy
     pointsSet
   }
 
-  def forAllPoints(f: Point => ()): Unit = {
+  def forAllPoints(f: Point => ()): Unit= {
     def nextPoint(point: Point): Point = {
       direction match {
         case Direction.HORIZONTAL =>
-          Point(
-            (point.coordinates._1 + 1).toChar,
-            point.coordinates._2,
-            point.pointType
+          (
+            ((point._1._1 + 1).toChar, point._1._2),
+            point._2
           )
         case Direction.VERTICAL =>
-          Point(
-            point.coordinates._1,
-            point.coordinates._2 + 1,
-            point.pointType
+          (
+            (point._1._1, point._1._2 + 1),
+            point._2
           )
-
       }
     }
     var p: Point = startPoint
@@ -51,38 +48,6 @@ case class Ship( direction: Direction.Value, startPoint: Point, typeShip: ShipTy
       p = nextPoint(p)
     }
   }
-
-
-}
-
-object Direction extends Enumeration {
-  val HORIZONTAL, VERTICAL = Value
-  def direction(direction: String) = direction.toUpperCase match {
-    case "HORIZONTAL" => Direction.HORIZONTAL
-    case "VERTICAL" => Direction.VERTICAL
-    case "V" => Direction.VERTICAL
-    case "H" => Direction.HORIZONTAL
-  }
-}
-
-case class ShipType(name: String, size: Int)
-
-object ShipT {
-  val CARRIER = ShipType("CARRIER", 5)
-  val BATTLESHIP = ShipType("BATTLESHIP", 4)
-  val DESTROYER = ShipType("DESTROYER", 3)
-  val SUBMARINE = ShipType("SUBMARINE", 3)
-  val PATROL_BOAT = ShipType("PATROL_BOAT", 2)
-
-  def shipType(name: String) = name.toUpperCase() match {
-    case "CARRIER" => ShipT.CARRIER
-    case "BATTLESHIP" => ShipT.BATTLESHIP
-    case "DESTROYER" => ShipT.DESTROYER
-    case "SUBMARINE" => ShipT.SUBMARINE
-    case "PATROL_BOAT" => ShipT.PATROL_BOAT
-  }
-
-
 
 
 }

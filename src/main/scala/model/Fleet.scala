@@ -1,25 +1,31 @@
 package model
 
-import scala.collection.mutable
+import model.DataTypes.Point
+import org.scalacheck.Prop.Exception
 
-case class Fleet(var shipsSet: mutable.Set[Ship] = mutable.Set.empty ) {
 
-  def addShip(ship: Ship): mutable.Set[Ship] = {
+case class Fleet(shipsSet: Set[Ship] = Set.empty ) {
+
+  def addShip(ship: Ship): Fleet = {
     if( !isShipOverlappingWithAlreadyContainedShip(ship)){
-      shipsSet += ship
-      shipsSet
+      Fleet(shipsSet + ship)
     }
     else
-      throw new Exception("You try to add ship which is overlapping with already contained ship")
+      throw new IllegalArgumentException("You try to add ship which is overlapping with already contained ship")
 
   }
 
-  def removeShip(ship: Ship): mutable.Set[Ship] = {
-    shipsSet -= ship
-    shipsSet
+  //  def setShipAs(ship: Ship, shipCondition: PointType.Value): Fleet = {
+  //    if(shipsSet.contains(ship)) Fleet(shipsSet.filter(s => s != ship) + ship.clone(sh))
+  //    else throw new IllegalArgumentException(s"Fleet does not contain this ship: ${ship.typeShip.name}")
+  //  }
+
+  def removeShip(ship: Ship): Fleet = {
+    Fleet(shipsSet - ship)
+
   }
-  def removeAll: Unit = {
-    shipsSet = mutable.Set.empty
+  def removeAll: Fleet = {
+    Fleet(Set.empty)
   }
 
   def isShipOverlappingWithAlreadyContainedShip(ship: Ship): Boolean ={
@@ -28,9 +34,9 @@ case class Fleet(var shipsSet: mutable.Set[Ship] = mutable.Set.empty ) {
       containedShip: Ship <- shipsSet;
       containedPoint: Point <- containedShip.getAllPoints;
       checkedPoint: Point <- ship.getAllPoints;
-      if (containedPoint.coordinates._1 == checkedPoint.coordinates._1 &&
-        containedPoint.coordinates._2 == checkedPoint.coordinates._2)
-      ) isOverlaping = true
+      if (containedPoint._1._1 == checkedPoint._1._1 &&
+        containedPoint._1._2 == checkedPoint._1._2)
+    ) isOverlaping = true
     isOverlaping
 
   }
