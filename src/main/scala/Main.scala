@@ -1,5 +1,5 @@
 import logic.Game
-import model.{MainBoard, Player, RegularPlayer, ShipType}
+import model.{Direction, Fleet, MainBoard, Player, PointType, RegularPlayer, Ship, ShipT, ShipType}
 
 object Main {
 
@@ -50,11 +50,13 @@ object Main {
       }
     }
 
-    val nextPlayer = game.secondPlayer(player)
     val input: Array[String] = askForCoordinates(player)
     val (isWinning, updatedGame) = game.guessPosition(player, input(0).charAt(0), input(1).toInt)
     if(isWinning) println(s"Game Over! \n ${player.id} won!")
-    else play(nextPlayer, updatedGame)
+    else {
+      val nextPlayer = updatedGame.secondPlayer(player)
+      play(nextPlayer, updatedGame)
+    }
 
   }
 
@@ -85,12 +87,25 @@ object Main {
   }
 
   def main(args: Array[String]) = {
-    val player1: Player = createPlayer(1)
-    val player2: Player = createPlayer(2)
+//    tests
+      val carrier: Ship = Ship(Direction.HORIZONTAL, (('A',0), PointType.OCCUPIED), ShipT.CARRIER)
+      val battleship: Ship = Ship(Direction.HORIZONTAL, (('B',1), PointType.OCCUPIED), ShipT.BATTLESHIP)
+      val destroyer: Ship = Ship(Direction.VERTICAL, (('C',3), PointType.OCCUPIED), ShipT.DESTROYER)
+      val submarine: Ship = Ship(Direction.VERTICAL, (('D',2), PointType.OCCUPIED), ShipT.SUBMARINE)
+      val patrol_boat: Ship = Ship(Direction.VERTICAL, (('E',5), PointType.OCCUPIED), ShipT.PATROL_BOAT)
+      var shipsSet: Set[Ship] = Set(carrier, battleship,destroyer,submarine,patrol_boat)
+      val fleet: Fleet = Fleet(shipsSet)
+
+
+    val player1: Player = createPlayer(1).initWithFleet(fleet)
+    val player2: Player = createPlayer(2).initWithFleet(fleet)
     val game: Game = Game(player1, player2)
-    val updatedGame: Game = placePlayerFleet(player1, game)
-    val gameReadyToPlay = placePlayerFleet(player2, updatedGame)
     println(s"${player1.id} is starting")
-    play(player1, gameReadyToPlay)
+    play(game.getPlayer(player1), game)
+
+//    val updatedGame: Game = placePlayerFleet(player1, game)
+//    val gameReadyToPlay = placePlayerFleet(player2, updatedGame)
+//    println(s"${player1.id} is starting")
+//    play(gameReadyToPlay.getPlayer(player1), gameReadyToPlay)
   }
 }

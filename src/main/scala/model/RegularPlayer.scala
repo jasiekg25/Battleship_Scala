@@ -50,6 +50,17 @@ case class RegularPlayer(
     updateListOfPoints(waterPointsSet.toSet)
   }
 
+  def initWithFleet(fleet: Fleet): Player = {
+    var updatedPlayer: Player = this
+    var updatedFleet: Fleet = fleet
+    for(s <- fleet.shipsSet){
+      updatedFleet = updatedPlayer.fleet.addShip(s)
+      updatedPlayer = updatedPlayer.addShipToMap(s)
+      updatedPlayer = RegularPlayer(updatedPlayer.id, updatedFleet, updatedPlayer.myBoard)
+    }
+    updatedPlayer
+  }
+
   def takeShot(coordinates: (Char, Int)): Player = { // TODO: show notification
     if (MainBoard.pointInBoard(coordinates))
       myBoard(coordinates) match {

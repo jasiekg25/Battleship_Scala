@@ -16,7 +16,7 @@ case class Game(player1: Player, player2: Player) {
       )
     val newFleet = player.fleet.addShip(ship)
     val newPlayer = player match { // todo: when artificialEnemy done, it will need to be rewrite
-      case RegularPlayer(id,_,mb) => RegularPlayer(id, newFleet, mb)
+      case RegularPlayer(id,_,mb) => RegularPlayer(id, newFleet, mb).addShipToMap(ship)
     }
     Game(newPlayer, secondPlayer(newPlayer))
   }
