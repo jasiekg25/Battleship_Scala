@@ -37,4 +37,8 @@ object Direction extends Enumeration {
     case "V" => Direction.VERTICAL
     case "H" => Direction.HORIZONTAL
   }
+  def toChar(direction: Direction.Value): Char = direction match {
+    case Direction.VERTICAL => 'V'
+    case Direction.HORIZONTAL => 'H'
+  }
 }

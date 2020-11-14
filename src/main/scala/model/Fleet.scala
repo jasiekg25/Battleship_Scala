@@ -10,8 +10,14 @@ case class Fleet(shipsSet: Set[Ship] = Set.empty ) {
     if( !isShipOverlappingWithAlreadyContainedShip(ship)){
       Fleet(shipsSet + ship)
     }
-    else
+    else {
+      val pointsShipsSet = shipsSet.flatMap(s => s.getAllPoints).map(p => p._1)
+      val pointsShip = ship.getAllPoints.map(p => p._1)
+
+      println(pointsShipsSet)
+      println(pointsShip)
       throw new IllegalArgumentException("You try to add ship which is overlapping with already contained ship")
+    }
 
   }
 
@@ -29,7 +35,6 @@ case class Fleet(shipsSet: Set[Ship] = Set.empty ) {
   }
 
   def isShipOverlappingWithAlreadyContainedShip(ship: Ship): Boolean ={
-
     shipsSet.exists(s => s.getAllPoints.exists(p => ship.getAllPoints.contains(p)))
   }
 
