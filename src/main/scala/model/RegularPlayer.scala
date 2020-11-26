@@ -6,6 +6,8 @@ case class RegularPlayer(
                           id: String,
                           fleet: Fleet = Fleet(),
                           myBoard: Board = Map.empty,
+                          alreadyShotCoordinates: List[Coordinates] = List.empty
+
                         ) extends Player {
 
   def updatePoint(point: Point): Player = {
@@ -40,6 +42,10 @@ case class RegularPlayer(
       }
 
     else (false, this) // never used
+  }
+
+  override def updateShotsList(coordinates: Coordinates): Player ={
+    RegularPlayer(id, fleet, myBoard, coordinates :: alreadyShotCoordinates)
   }
 
 }

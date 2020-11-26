@@ -6,6 +6,8 @@ trait Player {
   val id: String
   val fleet: Fleet
   val myBoard: Board
+  val alreadyShotCoordinates: List[Coordinates]
+
 
 
   def updatePoint(point: Point): Player
@@ -49,7 +51,7 @@ trait Player {
     for(s <- fleet.shipsSet){
       updatedFleet = updatedPlayer.fleet.addShip(s)
       updatedPlayer = updatedPlayer.addShipToMap(s)
-      updatedPlayer = RegularPlayer(updatedPlayer.id, updatedFleet, updatedPlayer.myBoard)
+      updatedPlayer = RegularPlayer(updatedPlayer.id, updatedFleet, updatedPlayer.myBoard, updatedPlayer.alreadyShotCoordinates)
     }
     updatedPlayer
   }
@@ -65,6 +67,8 @@ trait Player {
 
     hitPoints == ship.typeShip.size
   }
+
+  def updateShotsList(coordinates: Coordinates): Player
 
   def isShipSunken(ship: Ship): Boolean = {
     myBoard(ship.startPoint._1) == PointType.SINK

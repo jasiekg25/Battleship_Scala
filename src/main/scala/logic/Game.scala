@@ -14,7 +14,7 @@ case class Game(player1: Player, player2: Player) {
     var updatedPlayer = player
     for (shipType <- MainBoard.shipsTypes) {
       val input: Array[Char] = player match {
-        case RegularPlayer(_, _, _) => {
+        case RegularPlayer(_, _, _, _) => {
           InputParser.askForDirectionAndCoordinates(shipType)
         }
         case ArtificialEnemy(_, _, _, shotPoints) => {
@@ -23,7 +23,7 @@ case class Game(player1: Player, player2: Player) {
 
         }
       }
-      updatedGame = updatedGame.setShip(updatedGame.getPlayer(player), shipType.name, input(0).toString, input(1), input(2).asDigit)
+      updatedGame = updatedGame.setShip(updatedPlayer, shipType.name, input(0).toString, input(1), input(2).asDigit)
 
     }
     updatedGame
@@ -31,7 +31,7 @@ case class Game(player1: Player, player2: Player) {
 
   def play(player: Player): Unit = {
     val input: Array[Char] = player match {
-      case RegularPlayer(_, _, _) => {
+      case RegularPlayer(_, _, _, _) => {
         println(s"\n${player.id}\'s turn to shoot, give me coordinates")
         InputParser.askForCoordinates(player)
       }
@@ -42,7 +42,7 @@ case class Game(player1: Player, player2: Player) {
     }
 
     val (isHit, isWinning, updatedGame) = guessPosition(player, input(0), input(1).asDigit)
-    if (isHit) println(s"HIT at position (${input(0)},${input(1)})") else println(s"MISS at position (${input(0)},${input(1)})")
+    if (isHit) println(s"${player.id}:\t\t\tHIT at position (${input(0)},${input(1)})") else println(s"${player.id}: \tMISS at position (${input(0)},${input(1)})")
     if (isWinning) println(s"Game Over! \n ${player.id} won!")
     else {
       val nextPlayer = updatedGame.secondPlayer(player)
@@ -60,17 +60,18 @@ case class Game(player1: Player, player2: Player) {
       )
     val newFleet = player.fleet.addShip(ship)
     val newPlayer = player match {
-      case RegularPlayer(id, _, mb) => RegularPlayer(id, newFleet, mb).addShipToMap(ship)
-      case ArtificialEnemy(id, _, mb, sp) => ArtificialEnemy(id, newFleet, mb, sp)
+      case RegularPlayer(id, _, mb, shotsList) => RegularPlayer(id, newFleet, mb, shotsList).addShipToMap(ship)
+      case ArtificialEnemy(id, _, mb, shotsList) => ArtificialEnemy(id, newFleet, mb, shotsList).addShipToMap(ship)
     }
     Game(newPlayer, secondPlayer(newPlayer))
   }
 
   def guessPosition(player: Player, x: Char, y: Int): (Boolean, Boolean, Game) = {
     val enemyPlayer: Player = secondPlayer(player)
+    val updatedPlayer: Player = player.updateShotsList((x,y))
     val (isHit, updatedEnemy) = enemyPlayer.takeShot(x, y)
     if (isHit) (isHit, checkIfPlayerWon(player), Game(player, updatedEnemy))
-    else (false, false, Game(player, updatedEnemy))
+    else (false, checkIfPlayerWon(player), Game(updatedPlayer, updatedEnemy))
 
   }
 

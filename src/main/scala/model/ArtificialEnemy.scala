@@ -9,7 +9,7 @@ case class ArtificialEnemy(
                             id: String,
                             fleet: Fleet = Fleet(),
                             myBoard: Board = Map.empty,
-                            alreadyShotCoordinates: List[Coordinates]
+                            alreadyShotCoordinates: List[Coordinates] = List.empty
                           ) extends Player {
 
   def updatePoint(point: Point): Player = {
@@ -68,20 +68,19 @@ case class ArtificialEnemy(
     }
 
     def giveDirection(): Direction.Value = {
-      val randomVal = Random.nextInt(1)
+      def randomVal = Random.nextInt(1)
       if (randomVal == 0) Direction.HORIZONTAL else Direction.VERTICAL
     }
 
     def placeShip(shipT: ShipType): (Direction.Value, Coordinates) = {
-      var direction = giveDirection()
-      var startPoint = (giveCoordinates(), PointType.OCCUPIED)
-      var ship = Ship(direction, startPoint, shipT)
+      def direction() = giveDirection()
+      def startPoint() = (giveCoordinates(), PointType.OCCUPIED)
+      var ship = Ship(direction(), startPoint(), shipT)
+      def newShip = Ship(direction(), startPoint(), shipT)
       while (fleet.isShipOverlappingWithAlreadyContainedShip(ship) || !MainBoard.isShipSuitToBoard(ship)) {
-        var direction = giveDirection()
-        var startPoint = (giveCoordinates(), PointType.OCCUPIED)
-        var ship = Ship(direction, startPoint, shipT)
+        ship = newShip
       }
-      (direction, startPoint._1)
+      (ship.direction, ship.startPoint._1)
     }
 
 
@@ -95,5 +94,9 @@ case class ArtificialEnemy(
         intoCharArray("placeship", direction, coordinates)
       }
     }
+  }
+
+   override def updateShotsList(coordinates: Coordinates): Player ={
+    ArtificialEnemy(id, fleet, myBoard, coordinates :: alreadyShotCoordinates)
   }
 }
